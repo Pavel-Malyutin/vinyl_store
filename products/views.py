@@ -4,9 +4,17 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'products/index.html')
+    context = {
+        'title': 'VinylStore',
+        'h1_header': 'VinylStore - проигрыватели, пластинки и аксессуары',
+    }
+    return render(request, 'products/index.html', context)
 
 
 def products(request):
-    return render(request, 'products/products.html')
+    context = {
+        'title': 'VinylStore - каталог товаров',
+        'h1_header': 'VinylStore',
+    }
+    return render(request, 'products/products.html', context)
 
