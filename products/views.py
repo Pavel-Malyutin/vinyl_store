@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from products.models import Product, ProductCategory, Basket
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -13,14 +14,19 @@ def index(request):
     return render(request, 'products/index.html', context)
 
 
-def products(request):
+def products(request, category_id=None, page=1):
     context = {
         'title': 'VinylStore - каталог товаров',
         'h1_header': 'VinylStore',
         'categories': ProductCategory.objects.all(),
-        'products': Product.objects.all(),
-
     }
+    if category_id:
+        products_list = Product.objects.filter(category_id=category_id)
+    else:
+        products_list = Product.objects.all()
+    paginator = Paginator(products_list, 10)
+    products_paginator = paginator.page(page)
+    context.update({'products': products_paginator})
     return render(request, 'products/products.html', context)
 
 
